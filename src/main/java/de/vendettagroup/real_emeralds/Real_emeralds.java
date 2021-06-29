@@ -6,12 +6,12 @@ public final class Real_emeralds extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        this.getServer().getPluginManager().registerEvents(new Emerald(), this);
+        this.getLogger().info("Hopefully this is a good plugin, Real emeralds loaded");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        getLogger().info("Real_emeralds disabled");
     }
 }
