@@ -1,0 +1,68 @@
+########################################################################################################################
+# Welcome to the config of Real-Emeralds
+# Created by: Felix2300
+# Lore only accepts strings, no Lists working on a fix, but at the moment only strinngs sorry :&
+########################################################################################################################
+# Mined emerald:
+mEmerald:
+  displayName: '&fEmerald' # Default &fEmerald
+  lore: '&4Dropped out of a Stone!' # YOU SHOULD ALWAYS ADD AN LORE OTHERWISE THE CRAFTING OF BLOCKS WON'T WORK OUT :/
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false # Default false
+########################################################################################################################
+# Emerald blocks:
+# Emerald block with 1 mEmerald:
+m1EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 1 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 2 mEmerald:
+m2EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 2 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 3 mEmerald:
+m3EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 3 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 4 mEmerald:
+m4EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 4 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 5 mEmerald:
+m5EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 5 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 6 mEmerald:
+m6EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 6 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 7 mEmerald:
+m7EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 7 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 8 mEmerald:
+m8EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 8 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+# Emerald block with 9 mEmerald:
+m9EmBlock:
+  displayName: '&fEmeraldblock' # Default &fEmeraldblock
+  lore: '&4An emerald block made out of 9 mined emerald!'
+  customModelData: 0 # Default 0, if you want to use costume Textures edit this value;
+  glowEffect: false
+########################################################################################################################

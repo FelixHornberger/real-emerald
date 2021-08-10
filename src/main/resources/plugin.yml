@@ -1,6 +1,9 @@
 name: Real_emeralds
 version: ${project.version}
-main: de.vendettagroup.real_emeralds.Real_emeralds
+main: de.vendettagroup.real_emeralds.Main
 api-version: 1.17
 authors: [ felix2300 ]
 description: Adds an tag to mined emeralds, so you can difference between mined and traded emeralds
+
+commands:
+  realemerald:

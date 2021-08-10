@@ -1,2 +1,2 @@
-# realEmeralds
- Tags mined emeralds so you can difference between mined and traded emeralds
+# real-emerald
+Make an difference between traded and mined emeralds
