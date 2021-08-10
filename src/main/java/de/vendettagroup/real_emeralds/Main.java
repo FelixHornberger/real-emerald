@@ -4,9 +4,6 @@ import de.vendettagroup.real_emeralds.commands.Commands;
 import de.vendettagroup.real_emeralds.config.DataManager;
 import de.vendettagroup.real_emeralds.crafting.Recipes;
 import de.vendettagroup.real_emeralds.listener.Listener;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {

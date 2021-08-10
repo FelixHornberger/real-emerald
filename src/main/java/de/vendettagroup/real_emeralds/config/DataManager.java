@@ -6,17 +6,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class DataManager {
 
     private Main plugin;
-    /*
-    private FileConfiguration dataConfig;
-    private File configFile;
-     */
 
     private File directory;
 
@@ -24,7 +18,6 @@ public class DataManager {
     public DataManager(Main plugin) {
         this.plugin = plugin;
         directoryCheck();
-        //saveDefaultConfig();
     }
 
     private void directoryCheck(){
