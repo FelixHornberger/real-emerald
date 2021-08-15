@@ -17,11 +17,10 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("realemerald")) {
-            /*
             if (!sender.hasPermission("realemerald.reload")) {
                 sender.sendMessage(ChatColor.RED + "You dont have permission to this command");
                 return true;
-            }*/
+            }
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.RED + "Usage: /realemerald reload");
                 return true;

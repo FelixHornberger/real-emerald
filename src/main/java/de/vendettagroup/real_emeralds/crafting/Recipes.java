@@ -1,7 +1,6 @@
 package de.vendettagroup.real_emeralds.crafting;
 
 import de.vendettagroup.real_emeralds.Main;
-import de.vendettagroup.real_emeralds.RealEmeralds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -20,11 +19,9 @@ import java.util.List;
 public class Recipes implements Listener {
 
     private Main plugin;
-    private RealEmeralds realEmeralds;
 
-    public Recipes(Main plugin, RealEmeralds realEmeralds){
+    public Recipes(Main plugin){
         this.plugin = plugin;
-        this.realEmeralds = realEmeralds;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -51,30 +48,21 @@ public class Recipes implements Listener {
                 for (int i = 1; i <= 9; i++) {
                     if (e.getInventory().getItem(i) != null) {
                         amoutOfEmBlocks = e.getInventory().getItem(i).getAmount();
-                        plugin.getLogger().info(String.valueOf(e.getInventory().getItem(i).getType()));
-                        plugin.getLogger().info(String.valueOf(e.getInventory().getItem(i).getAmount()));
-                        plugin.getLogger().info(String.valueOf(amoutOfEmBlocks));
                     }
                 }
-                plugin.getLogger().info("Counter bevor *amoutofEmBlocks: " + count);
-                plugin.getLogger().info("amoutofEmBlocks: " + amoutOfEmBlocks);
                 count *= amoutOfEmBlocks;
-                plugin.getLogger().info("Counter nach *amoutofEmBlocks: " + count);
-                plugin.getConfig().getString("Vor Loop: " + count);
                 while (count > 64){
                     count -= 64;
-                    plugin.getLogger().info("Während Loop: " + count);
                     itemStack[0] = new ItemStack(Material.EMERALD, 64);
-                    p.getWorld().dropItemNaturally(p.getLocation(),new ItemStack(realEmeralds.changeOutput(itemStack)));
+                    p.getWorld().dropItemNaturally(p.getLocation(),new ItemStack(changeOutput(itemStack)));
                 }
                 itemStack[0] = new ItemStack(Material.EMERALD, count);
-                plugin.getLogger().info("Endstand: " + count);
             }
-            // TODO: - Auto Drop ins Inventory;
-            p.getWorld().dropItemNaturally(p.getLocation(),new ItemStack(realEmeralds.changeOutput(itemStack)));
+            p.getWorld().dropItemNaturally(p.getLocation(),new ItemStack(changeOutput(itemStack)));
         }
     }
 
+    // Here i check the output of an crafting Emeraldblock
     private void checkForEmeraldOutput(PrepareItemCraftEvent e) {
         if (e.getRecipe().getResult().getType().equals(Material.EMERALD)) {
             int maxDrop = 9;
@@ -85,7 +73,7 @@ public class Recipes implements Listener {
                         if(maxDrop == 0){
                             ItemStack[] itemStack = new ItemStack[1];
                             itemStack[0] = new ItemStack(Material.EMERALD, 9);
-                            e.getInventory().setResult(new ItemStack(realEmeralds.changeOutput(itemStack)));
+                            e.getInventory().setResult(new ItemStack(changeOutput(itemStack)));
                         } else {
                             e.getInventory().setResult(new ItemStack(Material.EMERALD, maxDrop));
                         }
@@ -95,10 +83,10 @@ public class Recipes implements Listener {
         }
     }
 
+    // Here i check how money emeralds there are needed to drop
     private int checkForEmBlockLore(List<String> lore) {
         String blockName;
         for (int i = 1; i <= 9; i++) {
-            // To line short I create the search String here
             blockName = "m" +  Integer.toString(i) + "EmBlock";
             for (String element : lore) {
                 if (ChatColor.translateAlternateColorCodes('§', element)
@@ -109,6 +97,7 @@ public class Recipes implements Listener {
         }
         return 0;
     }
+
 
     private void checkForEmBlockOutput(PrepareItemCraftEvent event) {
         if (event.getRecipe().getResult().getType().equals(Material.EMERALD_BLOCK)) {
@@ -127,15 +116,14 @@ public class Recipes implements Listener {
             }
             if (counter != 0) {
                 String blockName = "m" +  Integer.toString(counter) + "EmBlock";
-
                 event.getInventory().setResult(setBlockMeta(blockName, event.getRecipe().getResult()));
             }
         }
     }
 
+    // Data from Config gets here added
     public ItemStack setBlockMeta(String blockName, ItemStack item){
         ItemMeta meta = item.getItemMeta();
-        // Data from Config gets here added
         // DisplayName
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
                 plugin.getConfig().getString(blockName + ".displayName")));
@@ -170,4 +158,27 @@ public class Recipes implements Listener {
         }
         return false;
     }
+
+    // Adds an lore to the emerald, so there is an difference between traded and mined emeralds
+    public ItemStack changeOutput(ItemStack[] drops) {
+        ItemMeta meta = drops[0].getItemMeta();
+        ArrayList<String> lore = new ArrayList<String>();
+        lore.add(ChatColor.translateAlternateColorCodes('&',
+                plugin.getConfig().getString("mEmerald.lore")));
+        meta.setLore(lore);
+        if(!plugin.getConfig().getString("mEmerald.displayName").equals("&fEmerald")){
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
+                    plugin.getConfig().getString("mEmerald.displayName")));
+        }
+        if(plugin.getConfig().getBoolean("mEmerald.glowEffect")) {
+            meta.addEnchant(Enchantment.DURABILITY, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+        if(plugin.getConfig().getInt("mEmerald.customModelData") != 0) {
+            meta.setCustomModelData(plugin.getConfig().getInt("mEmerald.customModelData"));
+        }
+        drops[0].setItemMeta(meta);
+        return drops[0];
+    }
+
 }

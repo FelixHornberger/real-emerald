@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
-    private RealEmeralds realEmeralds;
     private DataManager data;
     private Recipes recipes;
 
@@ -16,9 +15,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         data =  new DataManager(this);
-        realEmeralds = new RealEmeralds(this);
-        recipes = new Recipes(this, realEmeralds);
-        getServer().getPluginManager().registerEvents(realEmeralds, this);
+        recipes = new Recipes(this);
         getServer().getPluginManager().registerEvents(recipes,this);
         getServer().getPluginManager().registerEvents(new Listener(this, data, recipes),this);
         getCommand("realemerald").setExecutor(new Commands(this));
