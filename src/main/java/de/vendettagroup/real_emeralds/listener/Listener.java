@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -27,6 +29,19 @@ public class Listener implements org.bukkit.event.Listener {
         this.recipes = recipes;
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onPrepareItemCraft(PrepareItemCraftEvent event) {
+        if(event.getRecipe() == null) {
+            return;
+        }
+        recipes.checkForEmBlockOutput(event);
+        recipes.checkForEmeraldOutput(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onCraftItem(CraftItemEvent e) {
+        recipes.craftEmerald(e);
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {

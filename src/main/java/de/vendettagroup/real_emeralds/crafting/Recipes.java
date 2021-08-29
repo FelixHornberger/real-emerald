@@ -1,12 +1,11 @@
 package de.vendettagroup.real_emeralds.crafting;
 
 import de.vendettagroup.real_emeralds.Main;
+import de.vendettagroup.real_emeralds.config.DataManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -16,25 +15,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recipes implements Listener {
+public class Recipes{
 
     private Main plugin;
+    private DataManager dataManager;
 
-    public Recipes(Main plugin){
+    public Recipes(Main plugin, DataManager dataManager){
         this.plugin = plugin;
+        this.dataManager = dataManager;
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onPrepareItemCraft(PrepareItemCraftEvent event) {
-        if(event.getRecipe() == null) {
-            return;
-        }
-        checkForEmBlockOutput(event);
-        checkForEmeraldOutput(event);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onCraftItem(CraftItemEvent e) {
+    public void craftEmerald(CraftItemEvent e) {
         if (e.getInventory().getResult().getType().equals(Material.EMERALD)) {
             if (e.getInventory().getResult().hasItemMeta()) {
                 return;
@@ -63,7 +54,7 @@ public class Recipes implements Listener {
     }
 
     // Here i check the output of an crafting Emeraldblock
-    private void checkForEmeraldOutput(PrepareItemCraftEvent e) {
+    public void checkForEmeraldOutput(PrepareItemCraftEvent e) {
         if (e.getRecipe().getResult().getType().equals(Material.EMERALD)) {
             int maxDrop = 9;
             for (int i = 0; i <= 9; i++) {
@@ -99,7 +90,7 @@ public class Recipes implements Listener {
     }
 
 
-    private void checkForEmBlockOutput(PrepareItemCraftEvent event) {
+    public void checkForEmBlockOutput(PrepareItemCraftEvent event) {
         if (event.getRecipe().getResult().getType().equals(Material.EMERALD_BLOCK)) {
             int counter = 0;
             for (int i = 0; i <= 9; i++) {
@@ -145,15 +136,16 @@ public class Recipes implements Listener {
         return result;
     }
 
-
     // I dont know shit
     // Mc converted & from the config to § ! WHY??????????? This toke so long to find out :(
     // This could be probably be optimized but as i like to say i will look into this tomorrow :)
     private boolean checkForLore(List<String> list){
         for (String element: list) {
-            if (ChatColor.translateAlternateColorCodes('§',element)
-                    .equals(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("mEmerald.lore")))) {
-                return true;
+            for (String elementOfLoreLog : dataManager.getLoreLog()) {
+                if (ChatColor.translateAlternateColorCodes('§',element)
+                        .equals(ChatColor.translateAlternateColorCodes('&',elementOfLoreLog))) {
+                    return true;
+                }
             }
         }
         return false;

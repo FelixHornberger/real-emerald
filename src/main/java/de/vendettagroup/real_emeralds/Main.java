@@ -15,10 +15,10 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         data =  new DataManager(this);
-        recipes = new Recipes(this);
-        getServer().getPluginManager().registerEvents(recipes,this);
+        recipes = new Recipes(this, data);
         getServer().getPluginManager().registerEvents(new Listener(this, data, recipes),this);
-        getCommand("realemerald").setExecutor(new Commands(this));
+        getCommand("reload").setExecutor(new Commands(this, data));
+        getCommand("clear-lore-log").setExecutor(new Commands(this, data));
     }
 
     @Override
