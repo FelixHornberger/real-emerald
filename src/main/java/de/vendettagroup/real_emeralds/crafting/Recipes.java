@@ -8,6 +8,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,14 +44,22 @@ public class Recipes{
                     }
                 }
                 count *= amoutOfEmBlocks;
+                count = sortInInventory(p.getInventory(), Material.EMERALD, count);
+                count = sortInInventory(p.getInventory(), null, count);
                 while (count > 64){
                     count -= 64;
                     itemStack[0] = new ItemStack(Material.EMERALD, 64);
                     p.getWorld().dropItemNaturally(p.getLocation(),new ItemStack(changeOutput(itemStack)));
                 }
-                itemStack[0] = new ItemStack(Material.EMERALD, count);
+                if(count != 0) {
+                    itemStack[0] = new ItemStack(Material.EMERALD, count);
+                }
             }
-            p.getWorld().dropItemNaturally(p.getLocation(),new ItemStack(changeOutput(itemStack)));
+            count = sortInInventory(p.getInventory(), Material.EMERALD, count);
+            count = sortInInventory(p.getInventory(), null, count);
+            if (count != 0) {
+                p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack(changeOutput(itemStack)));
+            }
         }
     }
 
@@ -171,6 +181,53 @@ public class Recipes{
         }
         drops[0].setItemMeta(meta);
         return drops[0];
+    }
+
+    private void playerInventory(Player p, int count){
+        Inventory inventory = p.getInventory();
+
+    }
+
+    private int sortInInventory(Inventory inventory, Material material, int count) {
+        if (count == 0) {
+            return count;
+        }
+        ItemStack[] itemStacks = new ItemStack[1];
+        itemStacks[0] = new ItemStack(Material.EMERALD);
+        for (ItemStack element : inventory) {
+            if (count == 0) {
+                return count;
+            }
+            if (material == null && element == null) {
+                if (count > 64) {
+                    count -= 64;
+                    itemStacks[0].setAmount(64);
+                } else {
+                    itemStacks[0].setAmount(count);
+                    count = 0;
+                }
+                element = changeOutput(itemStacks);
+            }
+            if (element != null) {
+                if (element.getType().equals(Material.EMERALD)) {
+                    if (element.getItemMeta().hasLore()) {
+                        for (String stringElement : element.getItemMeta().getLore()) {
+                            if (ChatColor.translateAlternateColorCodes('§', stringElement)
+                                    .equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("mEmerald.lore")))) {
+                                if (element.getAmount() + count > 64) {
+                                    count -= (64 - element.getAmount());
+                                    element.setAmount(64);
+                                } else {
+                                    element.setAmount(element.getAmount() + count);
+                                    return 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
     }
 
 }
