@@ -6,9 +6,5 @@ authors: [ felix2300 ]
 description: Adds an tag to mined emeralds, so you can difference between mined and traded emeralds
 
 commands:
-  reload:
-    description: Reloads the plugin! (Reloads the config file)
-    permission: realemerald.admin
-  clear-lore-log:
-    description: Clears the lore log!
+  realemerald:
     permission: realemerald.admin

@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -15,6 +16,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -89,10 +91,12 @@ public class Listener implements org.bukkit.event.Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         Player p = event.getPlayer();
-        if (block.getDrops(p.getInventory().getItemInMainHand()).contains(Material.EMERALD_BLOCK)){
+        Collection<ItemStack> collection = block.getDrops(p.getInventory().getItemInMainHand());
+        ItemStack[] drops = collection.toArray(new ItemStack[collection.size()]);
+        if (drops[0].getType().equals(Material.EMERALD_BLOCK)){
             breakEmeraldBlock(block, event);
         }
-        if (block.getDrops(p.getInventory().getItemInMainHand()).contains(Material.EMERALD)){
+        if (drops[0].getType().equals(Material.EMERALD)){
             breakEmeraldOre(p, event);
         }
     }

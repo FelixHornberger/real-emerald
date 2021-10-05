@@ -17,8 +17,7 @@ public final class Main extends JavaPlugin {
         data =  new DataManager(this);
         recipes = new Recipes(this, data);
         getServer().getPluginManager().registerEvents(new Listener(this, data, recipes),this);
-        getCommand("reload").setExecutor(new Commands(this, data));
-        getCommand("clear-lore-log").setExecutor(new Commands(this, data));
+        getCommand("realemerald").setExecutor(new Commands(this, data));
     }
 
     @Override
