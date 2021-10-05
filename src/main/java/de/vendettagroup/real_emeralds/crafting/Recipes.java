@@ -14,11 +14,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Recipes{
 
-    private Main plugin;
-    private DataManager dataManager;
+    private  Main plugin;
+    private  DataManager dataManager;
 
     public Recipes(Main plugin, DataManager dataManager){
         this.plugin = plugin;
@@ -26,7 +27,7 @@ public class Recipes{
     }
 
     public void craftEmerald(CraftItemEvent e) {
-        if (e.getInventory().getResult().getType().equals(Material.EMERALD)) {
+        if (Objects.requireNonNull(e.getInventory().getResult()).getType().equals(Material.EMERALD)) {
             if (e.getInventory().getResult().hasItemMeta()) {
                 return;
             }
@@ -35,13 +36,13 @@ public class Recipes{
             ItemStack[] itemStack = new ItemStack[1];
             itemStack[0] = new ItemStack(Material.EMERALD, count);
             if (e.isShiftClick()) {
-                int amoutOfEmBlocks = 0;
+                int amountOfEmBlocks = 0;
                 for (int i = 1; i <= 9; i++) {
                     if (e.getInventory().getItem(i) != null) {
-                        amoutOfEmBlocks = e.getInventory().getItem(i).getAmount();
+                        amountOfEmBlocks = Objects.requireNonNull(e.getInventory().getItem(i)).getAmount();
                     }
                 }
-                count *= amoutOfEmBlocks;
+                count *= amountOfEmBlocks;
                 count = sortInInventory(p.getInventory(), Material.EMERALD, count);
                 count = sortInInventory(p.getInventory(), null, count);
                 while (count > 64){
@@ -61,14 +62,14 @@ public class Recipes{
         }
     }
 
-    // Here i check the output of an crafting Emeraldblock
+    // Here i check the output of an crafting EmeraldBlock
     public void checkForEmeraldOutput(PrepareItemCraftEvent e) {
-        if (e.getRecipe().getResult().getType().equals(Material.EMERALD)) {
+        if (Objects.requireNonNull(e.getRecipe()).getResult().getType().equals(Material.EMERALD)) {
             int maxDrop = 9;
             for (int i = 0; i <= 9; i++) {
                 if (e.getInventory().getItem(i) != null) {
-                    if (e.getInventory().getItem(i).getType().equals(Material.EMERALD_BLOCK) && e.getInventory().getItem(i).getItemMeta().hasLore()) {
-                        maxDrop = maxDrop - checkForEmBlockLore(e.getInventory().getItem(i).getItemMeta().getLore());
+                    if (Objects.requireNonNull(e.getInventory().getItem(i)).getType().equals(Material.EMERALD_BLOCK) && Objects.requireNonNull(Objects.requireNonNull(e.getInventory().getItem(i)).getItemMeta()).hasLore()) {
+                        maxDrop = maxDrop - checkForEmBlockLore(Objects.requireNonNull(Objects.requireNonNull(e.getInventory().getItem(i)).getItemMeta()).getLore());
                         if(maxDrop == 0){
                             ItemStack[] itemStack = new ItemStack[1];
                             itemStack[0] = new ItemStack(Material.EMERALD, 9);
@@ -86,10 +87,10 @@ public class Recipes{
     private int checkForEmBlockLore(List<String> lore) {
         String blockName;
         for (int i = 1; i <= 9; i++) {
-            blockName = "m" +  Integer.toString(i) + "EmBlock";
+            blockName = "m" + i + "EmBlock";
             for (String element : lore) {
                 if (ChatColor.translateAlternateColorCodes('§', element)
-                        .equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(blockName + ".lore")))) {
+                        .equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString(blockName + ".lore"))))) {
                     return i;
                 }
             }
@@ -99,12 +100,12 @@ public class Recipes{
 
 
     public void checkForEmBlockOutput(PrepareItemCraftEvent event) {
-        if (event.getRecipe().getResult().getType().equals(Material.EMERALD_BLOCK)) {
+        if (Objects.requireNonNull(event.getRecipe()).getResult().getType().equals(Material.EMERALD_BLOCK)) {
             int counter = 0;
             for (int i = 0; i <= 9; i++) {
                 if (event.getInventory().getItem(i) != null) {
-                    if (event.getInventory().getItem(i).getType().equals(Material.EMERALD) && event.getInventory().getItem(i).getItemMeta().hasLore()){
-                        if (checkForLore(event.getInventory().getItem(i).getItemMeta().getLore())) {
+                    if (Objects.requireNonNull(event.getInventory().getItem(i)).getType().equals(Material.EMERALD) && Objects.requireNonNull(Objects.requireNonNull(event.getInventory().getItem(i)).getItemMeta()).hasLore()){
+                        if (checkForLore(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(event.getInventory().getItem(i)).getItemMeta()).getLore()))) {
                             counter++;
                         }
                     }
@@ -113,10 +114,8 @@ public class Recipes{
             if(counter == 0) {
                 return;
             }
-            if (counter != 0) {
-                String blockName = "m" +  Integer.toString(counter) + "EmBlock";
-                event.getInventory().setResult(setBlockMeta(blockName, event.getRecipe().getResult()));
-            }
+            String blockName = "m" +  counter + "EmBlock";
+            event.getInventory().setResult(setBlockMeta(blockName, event.getRecipe().getResult()));
         }
     }
 
@@ -124,15 +123,15 @@ public class Recipes{
     public ItemStack setBlockMeta(String blockName, ItemStack item){
         ItemMeta meta = item.getItemMeta();
         // DisplayName
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-                plugin.getConfig().getString(blockName + ".displayName")));
-        // CustomeModelData
+        Objects.requireNonNull(meta).setDisplayName(ChatColor.translateAlternateColorCodes('&',
+                Objects.requireNonNull(plugin.getConfig().getString(blockName + ".displayName"))));
+        // CustomModelData
         if (plugin.getConfig().getInt(blockName + ".customModelData") != 0) {
             meta.setCustomModelData(plugin.getConfig().getInt("mEmerald.customModelData"));
         }
         // Lore
-        ArrayList<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(blockName + ".lore")));
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString(blockName + ".lore"))));
         meta.setLore(lore);
         // Glow effect
         if (plugin.getConfig().getBoolean(blockName + ".glowEffect")) {
@@ -162,13 +161,13 @@ public class Recipes{
     // Adds an lore to the emerald, so there is an difference between traded and mined emeralds
     public ItemStack changeOutput(ItemStack[] drops) {
         ItemMeta meta = drops[0].getItemMeta();
-        ArrayList<String> lore = new ArrayList<String>();
+        ArrayList<String> lore = new ArrayList<>();
         lore.add(ChatColor.translateAlternateColorCodes('&',
-                plugin.getConfig().getString("mEmerald.lore")));
-        meta.setLore(lore);
-        if(!plugin.getConfig().getString("mEmerald.displayName").equals("&fEmerald")){
+                Objects.requireNonNull(plugin.getConfig().getString("mEmerald.lore"))));
+        Objects.requireNonNull(meta).setLore(lore);
+        if(!Objects.equals(plugin.getConfig().getString("mEmerald.displayName"), "&fEmerald")){
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-                    plugin.getConfig().getString("mEmerald.displayName")));
+                    Objects.requireNonNull(plugin.getConfig().getString("mEmerald.displayName"))));
         }
         if(plugin.getConfig().getBoolean("mEmerald.glowEffect")) {
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -209,10 +208,10 @@ public class Recipes{
             }
             if (element != null) {
                 if (element.getType().equals(Material.EMERALD)) {
-                    if (element.getItemMeta().hasLore()) {
-                        for (String stringElement : element.getItemMeta().getLore()) {
+                    if (Objects.requireNonNull(element.getItemMeta()).hasLore()) {
+                        for (String stringElement : Objects.requireNonNull(element.getItemMeta().getLore())) {
                             if (ChatColor.translateAlternateColorCodes('§', stringElement)
-                                    .equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("mEmerald.lore")))) {
+                                    .equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("mEmerald.lore"))))) {
                                 if (element.getAmount() + count > 64) {
                                     count -= (64 - element.getAmount());
                                     element.setAmount(64);

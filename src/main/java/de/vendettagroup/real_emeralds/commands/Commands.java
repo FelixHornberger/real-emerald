@@ -9,8 +9,8 @@ import org.bukkit.plugin.Plugin;
 
 public class Commands implements CommandExecutor {
 
-    private Plugin plugin;
-    private DataManager dataManager;
+    private final Plugin plugin;
+    private final DataManager dataManager;
 
     public Commands(Plugin plugin, DataManager dataManager){
         this.plugin = plugin;

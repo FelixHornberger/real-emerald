@@ -1,6 +1,5 @@
 de\vendettagroup\real_emeralds\config\DataManager.class
 de\vendettagroup\real_emeralds\commands\Commands.class
 de\vendettagroup\real_emeralds\crafting\Recipes.class
-de\vendettagroup\real_emeralds\listener\Listener$1.class
 de\vendettagroup\real_emeralds\listener\Listener.class
 de\vendettagroup\real_emeralds\Main.class

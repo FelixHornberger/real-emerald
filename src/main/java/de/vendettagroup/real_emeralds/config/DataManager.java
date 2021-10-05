@@ -61,7 +61,7 @@ public class DataManager {
     private void createLoreLog() {
         File loreLogFile =  new File(plugin.getDataFolder(), "loreLog.yml");
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(loreLogFile);
-        List<String> lorList = new ArrayList<String>();
+        List<String> lorList = new ArrayList<>();
         lorList.add(plugin.getConfig().getString("mEmerald.lore"));
         yaml.set("loreLog", lorList);
         try {

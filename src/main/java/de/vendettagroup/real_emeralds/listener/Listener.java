@@ -16,12 +16,13 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class Listener implements org.bukkit.event.Listener {
 
-    private Main plugin;
-    private Recipes recipes;
-    private DataManager data;
+    private  Main plugin;
+    private  Recipes recipes;
+    private  DataManager data;
 
     public Listener(Main plugin, DataManager data, Recipes recipes) {
         this.plugin = plugin;
@@ -55,7 +56,7 @@ public class Listener implements org.bukkit.event.Listener {
                 itemPlaced = player.getInventory().getItemInOffHand();
             }
             if (itemPlaced.hasItemMeta()){
-                if ( itemPlaced.getItemMeta().hasLore()) {
+                if ( Objects.requireNonNull(itemPlaced.getItemMeta()).hasLore()) {
                     String blockName = checkForLore(itemPlaced);
                     if (blockName.equals("Not found")) {
                         return;
@@ -73,10 +74,10 @@ public class Listener implements org.bukkit.event.Listener {
     private String checkForLore(ItemStack itemPlaced){
         String blockName;
         for (int i = 1; i <= 9; i++) {
-            blockName = "m" +  Integer.toString(i) + "EmBlock";
-            for (String element : itemPlaced.getItemMeta().getLore()) {
+            blockName = "m" + i + "EmBlock";
+            for (String element : Objects.requireNonNull(Objects.requireNonNull(itemPlaced.getItemMeta()).getLore())) {
                 if (ChatColor.translateAlternateColorCodes('§', element)
-                        .equals(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(blockName + ".lore")))) {
+                        .equals(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString(blockName + ".lore"))))) {
                     return blockName;
                 }
             }
@@ -88,21 +89,15 @@ public class Listener implements org.bukkit.event.Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         Player p = event.getPlayer();
-        if (block.getType().equals(Material.EMERALD_BLOCK)){
+        if (block.getDrops(p.getInventory().getItemInMainHand()).contains(Material.EMERALD_BLOCK)){
             breakEmeraldBlock(block, event);
         }
-        if(event.getBlock().getType() == Material.EMERALD_ORE || event.getBlock().getType() == Material.DEEPSLATE_EMERALD_ORE ) {
+        if (block.getDrops(p.getInventory().getItemInMainHand()).contains(Material.EMERALD)){
             breakEmeraldOre(p, event);
         }
     }
 
     private void breakEmeraldBlock(Block block, BlockBreakEvent event){
-        switch (event.getPlayer().getInventory().getItemInMainHand().getType()){
-            case WOODEN_PICKAXE:
-            case STONE_PICKAXE:
-            case GOLDEN_PICKAXE:
-                return;
-        }
         String blockLore = data.checkIfBlockPosExists(createBlockPosString(block));
         if(blockLore.equals("error")){
             return;
@@ -110,27 +105,16 @@ public class Listener implements org.bukkit.event.Listener {
         event.setDropItems(false);
         event.getPlayer().getWorld().dropItemNaturally(block.getLocation(),recipes.setBlockMeta(blockLore,
                 new ItemStack(Material.EMERALD_BLOCK)));
-        return;
     }
 
     private void breakEmeraldOre(Player p,BlockBreakEvent event) {
         Collection<ItemStack> blockDrop = event.getBlock().getDrops(p.getInventory().getItemInMainHand());
-        ItemStack[] drops = blockDrop.toArray(new ItemStack[blockDrop.size()]);
+        ItemStack[] drops = blockDrop.toArray(new ItemStack[0]);
         if (drops[0].getType().equals(Material.EMERALD)) {
             Location location = event.getBlock().getLocation();
-            location.getWorld().dropItem(location, recipes.changeOutput(drops));
+            Objects.requireNonNull(location.getWorld()).dropItem(location, recipes.changeOutput(drops));
             event.setDropItems(false);
         }
     }
 
-    private String blockToDrop(String lore){
-        String blockName;
-        for (int i =1; i <= 9; i++){
-            blockName = "m" +  Integer.toString(i) + "EmBlock";
-            if(lore.equals(plugin.getConfig().getString(plugin.getConfig().getString(blockName + ".lore")))) {
-                return blockName;
-            }
-        }
-        return "error";
-    }
 }

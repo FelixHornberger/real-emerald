@@ -1,5 +1,5 @@
 name: Real_emeralds
-version: 1.0-SNAPSHOT
+version: 2.0
 main: de.vendettagroup.real_emeralds.Main
 api-version: 1.17
 authors: [ felix2300 ]
