@@ -1,5 +1,4 @@
 package de.vendettagroup.real_emeralds.crafting;
-
 import de.vendettagroup.real_emeralds.Main;
 import de.vendettagroup.real_emeralds.config.DataManager;
 import org.bukkit.ChatColor;
@@ -9,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -183,11 +181,12 @@ public class Recipes{
         return drops[0];
     }
 
-    private void playerInventory(Player p, int count){
-        Inventory inventory = p.getInventory();
-
-    }
-
+    /** Methode to sort in Inventory (surprise)
+     *  This methods gets called 2d Times when uncrafting an emerald block
+     *  First call checks if the player already has an Emerald in inventory
+     *  Second calls checks if Player has an empty slot in inventory
+     *
+     */
     private int sortInInventory(Inventory inventory, Material material, int count) {
         if (count == 0) {
             return count;
