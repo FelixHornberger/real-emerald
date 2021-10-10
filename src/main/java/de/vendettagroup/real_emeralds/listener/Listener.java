@@ -93,6 +93,9 @@ public class Listener implements org.bukkit.event.Listener {
         Player p = event.getPlayer();
         Collection<ItemStack> collection = block.getDrops(p.getInventory().getItemInMainHand());
         ItemStack[] drops = collection.toArray(new ItemStack[collection.size()]);
+        if (drops.length == 0){
+            return;
+        }
         if (drops[0].getType().equals(Material.EMERALD_BLOCK)){
             breakEmeraldBlock(block, event);
         }
